@@ -8,9 +8,9 @@ from typing import Any, List, Tuple, Set
 
 import asttokens
 
-from RQ1.Attribute import FileAttribute
-from RQ1.CsvItem import CsvItem
-from RQ1.Util import find
+from Coverage.Attribute import FileAttribute
+from Coverage.CsvItem import CsvItem
+from Coverage.Util import find
 
 
 class FunVarCoverage(CsvItem):

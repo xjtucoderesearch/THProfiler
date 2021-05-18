@@ -1,1 +1,0 @@
-set SCRIPT_PATH="main.py"

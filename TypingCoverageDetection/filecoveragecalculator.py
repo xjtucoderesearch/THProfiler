@@ -2,8 +2,8 @@ import os
 import pathlib
 from pathlib import Path
 
-from RQ1.CsvItem import CsvItem
-from RQ1.Util import find
+from Coverage.CsvItem import CsvItem
+from Coverage.Util import find
 
 
 class ProjeceName(CsvItem):

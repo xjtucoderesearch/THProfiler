@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from RQ1.CsvItem import CsvItem
+from Coverage.CsvItem import CsvItem
 
 
 class ProjectFunVarAttribute:

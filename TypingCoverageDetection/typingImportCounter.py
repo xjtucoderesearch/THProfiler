@@ -8,9 +8,9 @@ from typing import Any, Dict
 
 import asttokens
 
-from RQ1.CsvItem import CsvItem, union_csv_items
-from RQ1.Util import find
-from RQ1.filecoveragecalculator import ProjeceName
+from Coverage.CsvItem import CsvItem, union_csv_items
+from Coverage.Util import find
+from Coverage.filecoveragecalculator import ProjeceName
 
 
 class ImportDepCounterSingle(NodeVisitor):

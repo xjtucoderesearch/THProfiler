@@ -8,8 +8,8 @@ from typing import Tuple, Set, List
 
 from asttokens import asttokens
 
-from RQ1.CsvItem import CsvItem
-from RQ1.Util import find
+from Coverage.CsvItem import CsvItem
+from Coverage.Util import find
 
 
 class ClassSignature:

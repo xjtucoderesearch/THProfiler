@@ -1,14 +1,14 @@
 import argparse
 from pathlib import Path
 
-from RQ2.file_util import *
-from RQ2.degree import *
-from RQ2.drh_deal import *
-from RQ2.xml_to_json import xml_to_json
-from RQ3.gitlogprocessor import *
-from RQ3.getnode import *
-from RQ3.changeproness import *
-from RQ1.main import CovEntry
+from DegreeCentrality.file_util import *
+from DegreeCentrality.recommender import *
+from DegreeCentrality.drh_deal import *
+from DegreeCentrality.xml_to_json import xml_to_json
+from MaintenanceMeasurement.gitlogprocessor import *
+from MaintenanceMeasurement.getnode import *
+from MaintenanceMeasurement.changeproness import *
+from TypingCoverageDetection.main import CovEntry
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
                              'default value is project root directory')
     parser.add_argument('--name', '-n', action='store', dest='project_name',
                         help='specify project name')
-    less_indent_formatter = lambda prog: argparse.RawTextHelpFormatter(prog, indent_increment=4)
+    parser.add_argument('--out', action='store', dest='out_url')
     parser.add_argument('--coverage', '-c', action='store_true', dest='coverage', default=False)
 
     parser.add_argument('--degree', action='store_true', dest='degree', default=False)
@@ -37,25 +37,31 @@ def main():
                         help='merge ARG1 and ARG2 into ARG3')
     parser.add_argument('--from-understand', nargs=3, action='store', dest='from_understand')
 
+    parser.add_argument('-drh',nargs=1, metavar=('drh_URL'), action='store', dest='drh_method')
+
+    parser.add_argument('--measure', action='store_true', dest='measure', default=False,
+                        help="analyzes the maintenance cost of typed and untyped files according to the revision "
+                             "history managed by VCS")
+
     args = parser.parse_args()
     dispatch(args)
-    print()
 
 
 def dispatch(args):
     if not hasattr(args, 'project_root'):
         raise ValueError("root directory of project must supply, see -h for more detailed")
 
-    if hasattr(args, 'coverage') and args.coverage:
-        src_dir = Path(args.project_root)
-        if hasattr(args, 'stub_root'):
-            stub_dir = Path(args.stub_root)
-        else:
-            stub_dir = src_dir
-        if hasattr(args, 'project_name'):
-            project_name = args.project_name
-        else:
-            project_name = src_dir.name
+    src_dir = Path(args.project_root)
+    if args.stub_root is not None:
+        stub_dir = Path(args.stub_root)
+    else:
+        stub_dir = src_dir
+    if args.project_name is not None:
+        project_name = args.project_name
+    else:
+        project_name = src_dir.name
+
+    if args.coverage:
         CovEntry(src_dir, stub_dir, project_name)
 
     if args.degree:
@@ -67,11 +73,24 @@ def dispatch(args):
             print("Option error in degree, if you specified degree option,"
                   " degree-output, statistic, dependency and filetype option shouled also be specified")
 
+    if args.drh_method is not None:
+        drh_statistical(args.drh_method, project_name + '_drh.csv')
+
     if args.merge:
         merge(*args.merge)
 
     if args.from_understand:
         xml_to_json(*args.from_understand)
+
+    if args.measure:
+        rootDir = str(src_dir.absolute().parent).replace("\\", "/") + "/"
+        gitlog(rootDir, project_name)
+        dir = rootDir + project_name
+        mc_file = rootDir + project_name + '/mc/history-py.csv'
+        outfile = rootDir + project_name + '/mc/file-mc.csv'
+        node_url = rootDir + project_name + "-node.csv"
+        get_nodefile(dir, node_url)
+        changeproness(node_url, mc_file, outfile)
 
 
 def RQ23Entry():

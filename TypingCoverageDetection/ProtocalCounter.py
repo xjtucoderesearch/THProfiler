@@ -7,8 +7,8 @@ from typing import Set, Tuple
 
 from asttokens import asttokens
 from ast import ClassDef
-from RQ1.CsvItem import CsvItem, cat_csv_item
-from RQ1.Util import find
+from Coverage.CsvItem import CsvItem, cat_csv_item
+from Coverage.Util import find
 
 
 class ClassRel(Enum):
