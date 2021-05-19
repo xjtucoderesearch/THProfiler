@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 from DegreeCentrality.file_util import *
-from DegreeCentrality.recommender import *
+from DegreeCentrality.degree import *
 from DegreeCentrality.drh_deal import *
 from DegreeCentrality.xml_to_json import xml_to_json
 from MaintenanceMeasurement.gitlogprocessor import *
