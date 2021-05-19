@@ -27,7 +27,7 @@ python main.py --directory <project root path> --stub <stub path>
 ```
 If you need an alias to the project, you can provide the alias by --name option.
 ```sh
-python main.py --directory <project root path> --stub
+python main.py --directory <project root path> --stub --name <alias>
 ```
 ### DegreeCentrality
 This module computes the degree centrality for files based on the ADG built by Dependency Structure Analysis.    
