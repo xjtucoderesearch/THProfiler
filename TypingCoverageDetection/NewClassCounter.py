@@ -8,8 +8,8 @@ from typing import Tuple, Set, List
 
 from asttokens import asttokens
 
-from Coverage.CsvItem import CsvItem
-from Coverage.Util import find
+from TypingCoverageDetection.CsvItem import CsvItem
+from TypingCoverageDetection.Util import find
 
 
 class ClassSignature:

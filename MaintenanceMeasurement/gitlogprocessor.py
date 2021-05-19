@@ -2,8 +2,9 @@ import re
 import subprocess
 import os
 import csv
+from pathlib import Path
 
-from RQ3.basedata import *
+from MaintenanceMeasurement.basedata import *
 
 def generateLog(rootDir, projectName):
     mcDir = rootDir + projectName + "/" + "mc/"
@@ -11,7 +12,7 @@ def generateLog(rootDir, projectName):
     cmd = "mkdir " + mcDir
     if os.path.exists(mcDir) == False:
         print(cmd)
-        returncode = subprocess.call(cmd, shell=True)
+        Path(mcDir).mkdir(exist_ok=True)
 
     fullSrcDir = rootDir + projectName
     os.chdir(fullSrcDir)

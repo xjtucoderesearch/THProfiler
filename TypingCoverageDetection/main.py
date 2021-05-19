@@ -1,10 +1,10 @@
 import sys
 from pathlib import Path
 
-from Coverage.CsvItem import cat_csv_item, union_csv_items, CsvItem
-from Coverage.NewClassCounter import ClassCounter
-from Coverage.filecoveragecalculator import FileCoverageCalculator, ProjeceName
-from Coverage.funcoveragecalculator import FunCoverageCalculator
+from TypingCoverageDetection.CsvItem import cat_csv_item, union_csv_items, CsvItem
+from TypingCoverageDetection.NewClassCounter import ClassCounter
+from TypingCoverageDetection.filecoveragecalculator import FileCoverageCalculator, ProjeceName
+from TypingCoverageDetection.funcoveragecalculator import FunCoverageCalculator
 
 
 def main():

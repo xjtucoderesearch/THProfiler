@@ -8,9 +8,9 @@ from typing import Any, Dict
 
 import asttokens
 
-from Coverage.CsvItem import CsvItem, union_csv_items
-from Coverage.Util import find
-from Coverage.filecoveragecalculator import ProjeceName
+from TypingCoverageDetection.CsvItem import CsvItem, union_csv_items
+from TypingCoverageDetection.Util import find
+from TypingCoverageDetection.filecoveragecalculator import ProjeceName
 
 
 class ImportDepCounterSingle(NodeVisitor):

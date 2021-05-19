@@ -2,8 +2,8 @@ import os
 import pathlib
 from pathlib import Path
 
-from Coverage.CsvItem import CsvItem
-from Coverage.Util import find
+from TypingCoverageDetection.CsvItem import CsvItem
+from TypingCoverageDetection.Util import find
 
 
 class ProjeceName(CsvItem):

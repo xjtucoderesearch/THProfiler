@@ -4,7 +4,7 @@ import csv
 from pathlib import Path
 from typing import List
 
-from Coverage.CsvItem import to_csvItem, cat_csv_item
+from TypingCoverageDetection.CsvItem import to_csvItem, cat_csv_item
 
 csv_list: List[Path] = []
 

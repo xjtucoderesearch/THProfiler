@@ -8,9 +8,9 @@ from typing import Any, List, Tuple, Set
 
 import asttokens
 
-from Coverage.Attribute import FileAttribute
-from Coverage.CsvItem import CsvItem
-from Coverage.Util import find
+from TypingCoverageDetection.Attribute import FileAttribute
+from TypingCoverageDetection.CsvItem import CsvItem
+from TypingCoverageDetection.Util import find
 
 
 class FunVarCoverage(CsvItem):

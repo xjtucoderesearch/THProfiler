@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from Coverage.CsvItem import CsvItem
+from TypingCoverageDetection.CsvItem import CsvItem
 
 
 class ProjectFunVarAttribute:
