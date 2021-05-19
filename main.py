@@ -5,9 +5,9 @@ from DegreeCentrality.file_util import *
 from DegreeCentrality.degree import *
 from DegreeCentrality.drh_deal import *
 from DegreeCentrality.xml_to_json import xml_to_json
-from MaintenanceMeasurement.gitlogprocessor import *
-from MaintenanceMeasurement.getnode import *
-from MaintenanceMeasurement.changeproness import *
+from MaintenanceCostMeasurement.gitlogprocessor import *
+from MaintenanceCostMeasurement.getnode import *
+from MaintenanceCostMeasurement.changeproness import *
 from TypingCoverageDetection.main import CovEntry
 
 
