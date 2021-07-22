@@ -5,7 +5,7 @@ from typing import Optional, List
 from DegreeCentrality.file_util import *
 from DegreeCentrality.degree import *
 from DegreeCentrality.drh_deal import *
-from DegreeCentrality.recommender import recommend_by_degree, recommend_by_maintenance
+from DegreeCentrality.recommender import recommend_by_degree, recommend_by_maintenance, recommend_by_drh
 from DegreeCentrality.xml_to_json import xml_to_json
 from MaintenanceCostMeasurement.gitlogprocessor import *
 from MaintenanceCostMeasurement.getnode import *
@@ -71,9 +71,9 @@ def dispatch_feature(src_dir: Path, features: List[str], top: Optional[str], arg
             for file in recommend_lst:
                 print(file)
         elif feature == "drh":
-            pass
+            recommend_lst = recommend_by_drh(args.drh_method, rate)
         elif feature == "maintenance":
-            recommend_lst = recommend_by_maintenance(src_dir)
+            recommend_lst = recommend_by_maintenance(src_dir, rate)
 
         union_recommend_set.update(recommend_lst)
         if len(intersection_recommend_set) != 0:

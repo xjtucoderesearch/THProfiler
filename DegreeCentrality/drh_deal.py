@@ -39,11 +39,10 @@ def drh_statistical(file_url, out_url):
 
     f = open(out_url, 'w', encoding='utf-8', newline="")
     csv_writer = csv.writer(f)
-    csv_writer.writerow(["file","Layer","Module"])
+    csv_writer.writerow(["file", "Layer", "Module"])
     for file in file_list:
         csv_writer.writerow([file.file_name, file.Layer, file.Module])
     f.close()
-
 
 # drh_statistical("C:/Users/ding7/Desktop/result-0325/numpy/out/numpy-result-drh.json",
 #                 "C:/Users/ding7/Desktop/result-0325/numpy/out/numpy-result-drh.csv")

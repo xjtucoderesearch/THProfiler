@@ -29,7 +29,7 @@ def create_graph(url):
         for cell in cells:
             G.add_edge(cell['src'], cell['dest'])
             edge_list.add((cell['src'], cell['dest']))
-    return G, variables,  edge_list
+    return G, variables, edge_list
 
 
 def quick_sort(nums: list, variable: list, left: int, right: int) -> None:
@@ -61,11 +61,11 @@ def count_deal(left, right, variable, diction, count_temp, count_temp_types, has
     for i in range(left, right):
         count_temp.append(variable[i])
 
-        if diction[variable[i].replace('F:/analyze-projects/matplotlib-3.3/matplotlib-3.3.3/lib/','')] == 'typed':
+        if diction[variable[i].replace('F:/analyze-projects/matplotlib-3.3/matplotlib-3.3.3/lib/', '')] == 'typed':
             count_temp_types.append(variable[i])
 
     return "%.2f%%" % ((len(count_temp_types) / len(count_temp)) * 100), "%.2f%%" % (
-                (len(count_temp_types) / len(hastyped)) * 100)
+            (len(count_temp_types) / len(hastyped)) * 100)
 
 
 def count_by_step(variable, diction, hastyped):
@@ -88,7 +88,7 @@ def count_by_step(variable, diction, hastyped):
     return temp_ratio, typed_ratio
 
 
-def degree_statistical(result, variables, typed,  dictionary):
+def degree_statistical(result, variables, typed, dictionary):
     variable_temp = variables
     quick_sort(result, variable_temp, 0, len(result) - 1)
     temp_ratio, typed_ratio = count_by_step(variable_temp, dictionary, typed)
@@ -115,14 +115,15 @@ def typed_deal(filepath):
 def degree_processing(G, variables, typed_url, node_url, statistic_url):
     typed, dictionary = typed_deal(typed_url)
     node_result = range(0, G.number_of_nodes())
-    degree_centrality, degree_temp_ratio, degree_typed_ratio = degree_statistical(nx.degree_centrality(G), variables, typed, dictionary)
+    degree_centrality, degree_temp_ratio, degree_typed_ratio = degree_statistical(nx.degree_centrality(G), variables,
+                                                                                  typed, dictionary)
 
     node_columns = ["NodeID", "Nodename", "degree_centrality"]
     with open(node_url, 'w', newline='') as t_file:
         csv_writer = csv.writer(t_file)
         csv_writer.writerow(node_columns)
         for l in range(len(node_result)):
-            csv_writer.writerow([node_result[l], variables[l], '%.4f' %degree_centrality[l]])
+            csv_writer.writerow([node_result[l], variables[l], '%.4f' % degree_centrality[l]])
     index = []
     for i in range(1, 11):
         index.append("Top %d" % (i * 10) + "%")
@@ -137,7 +138,7 @@ def get_degree(dependency_url, typed_url, degree_url, statistic_url):
     # dependency_url = ""
     # typed_url = ""
 
-    #output
+    # output
     # degree_url = ""
     # statistic_url = ""
 
