@@ -1,9 +1,11 @@
 import argparse
 from pathlib import Path
+from typing import Optional, List
 
 from DegreeCentrality.file_util import *
 from DegreeCentrality.degree import *
 from DegreeCentrality.drh_deal import *
+from DegreeCentrality.recommender import recommend_by_degree
 from DegreeCentrality.xml_to_json import xml_to_json
 from MaintenanceCostMeasurement.gitlogprocessor import *
 from MaintenanceCostMeasurement.getnode import *
@@ -37,14 +39,53 @@ def main():
                         help='merge ARG1 and ARG2 into ARG3')
     parser.add_argument('--from-understand', nargs=3, action='store', dest='from_understand')
 
-    parser.add_argument('-drh',nargs=1, metavar=('drh_URL'), action='store', dest='drh_method')
+    parser.add_argument('-drh', nargs=1, metavar=('drh_URL'), action='store', dest='drh_method')
 
     parser.add_argument('--measure', action='store_true', dest='measure', default=False,
                         help="analyzes the maintenance cost of typed and untyped files according to the revision "
                              "history managed by VCS")
 
+    parser.add_argument('--feature', action='store', dest='feature')
+    parser.add_argument('--top', action='store', dest='top')
+
     args = parser.parse_args()
     dispatch(args)
+
+
+def dispatch_feature(src_dir: Path, features: List[str], top: Optional[str], args):
+    rank_rates: List[float]
+    if top is not None:
+        rank_rates = [float(x) * 0.01 for x in top.split(",")]
+    else:
+        rank_rates = []
+    while len(rank_rates) < len(features):
+        rank_rates.append(0.1)
+
+    intersection_recommend_set = set()
+    union_recommend_set = set()
+    for feature, rate in zip(features, rank_rates):
+        recommend_lst = []
+        if feature == "degree":
+            recommend_lst = recommend_by_degree(src_dir, rate, args.dependency, args.filetype)
+            print("Recommend file by degree(top %{} files are recommended):".format(rate * 100))
+            for file in recommend_lst:
+                print(file)
+        elif feature == "drh":
+            pass
+        elif feature == "maintenance":
+            pass
+
+        union_recommend_set.update(recommend_lst)
+        if len(intersection_recommend_set) != 0:
+            intersection_recommend_set = intersection_recommend_set.intersection(recommend_lst)
+        else:
+            intersection_recommend_set = set(recommend_lst)
+    print("Intersection recommendation:")
+    for file in intersection_recommend_set:
+        print(file)
+    print("Union recommendation:")
+    for file in union_recommend_set:
+        print(file)
 
 
 def dispatch(args):
@@ -91,6 +132,11 @@ def dispatch(args):
         node_url = rootDir + project_name + "-node.csv"
         get_nodefile(dir, node_url)
         changeproness(node_url, mc_file, outfile)
+
+    if args.feature:
+        features = args.feature
+
+        dispatch_feature(src_dir, features.split(","), args.top, args)
 
 
 def RQ23Entry():
