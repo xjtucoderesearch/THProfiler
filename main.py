@@ -5,7 +5,7 @@ from typing import Optional, List
 from DegreeCentrality.file_util import *
 from DegreeCentrality.degree import *
 from DegreeCentrality.drh_deal import *
-from DegreeCentrality.recommender import recommend_by_degree
+from DegreeCentrality.recommender import recommend_by_degree, recommend_by_maintenance
 from DegreeCentrality.xml_to_json import xml_to_json
 from MaintenanceCostMeasurement.gitlogprocessor import *
 from MaintenanceCostMeasurement.getnode import *
@@ -66,14 +66,14 @@ def dispatch_feature(src_dir: Path, features: List[str], top: Optional[str], arg
     for feature, rate in zip(features, rank_rates):
         recommend_lst = []
         if feature == "degree":
-            recommend_lst = recommend_by_degree(src_dir, rate, args.dependency, args.filetype)
+            recommend_lst = recommend_by_degree(rate, args.dependency)
             print("Recommend file by degree(top %{} files are recommended):".format(rate * 100))
             for file in recommend_lst:
                 print(file)
         elif feature == "drh":
             pass
         elif feature == "maintenance":
-            pass
+            recommend_lst = recommend_by_maintenance(src_dir)
 
         union_recommend_set.update(recommend_lst)
         if len(intersection_recommend_set) != 0:
