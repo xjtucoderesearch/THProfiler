@@ -11,7 +11,7 @@ def generateLog(rootDir, projectName):
 
     cmd = "mkdir " + mcDir
     if os.path.exists(mcDir) == False:
-        print(cmd)
+        # print(cmd)
         Path(mcDir).mkdir(exist_ok=True)
 
     fullSrcDir = rootDir + projectName
@@ -19,7 +19,7 @@ def generateLog(rootDir, projectName):
 
     gitlogFile = mcDir + "gitlog"
     cmd = "git log --numstat --date=iso > " + gitlogFile
-    print(cmd)
+    # print(cmd)
     returncode = subprocess.call(cmd, shell=True)
 
     #os.chdir("C:\\Users\\ding7\\Desktop\\gitrepo\\pythonbug")
@@ -125,11 +125,11 @@ def processPreCmt(commitId, authorName, date, fileList, addList, delList, issueI
 
 def getAllFilesByFilter(root, projectName):
     dir = root + projectName
-    print(dir)
+    # print(dir)
     fileList_all = list()
     fileList_py = list()
     fileList_notest = list()
-    print("dir:"+dir)
+    # print("dir:"+dir)
     for filename, dirs, files in os.walk(dir, topdown=True):
         filename = filename.split(dir)[1]
         filename = filename.replace("\\", "/")
@@ -145,7 +145,7 @@ def getAllFilesByFilter(root, projectName):
                 if "tests\\" not in file and "test\\" not in file and "test_" not in file and "_test.py" not in file:
                     fileList_notest.append(file_temp)
 
-    print("file benchmark: ", len(fileList_all), len(fileList_py), len(fileList_notest))
+    # print("file benchmark: ", len(fileList_all), len(fileList_py), len(fileList_notest))
     return fileList_all, fileList_py, fileList_notest
 
 
@@ -153,7 +153,7 @@ def writeCSV(aList, fileName):
     with open(fileName, "w", newline="", encoding='utf-8') as fp:
         writer = csv.writer(fp, delimiter=",")
         writer.writerows(aList)
-    print("commit len: ", len(aList))
+    # print("commit len: ", len(aList))
 
 
 def saveCommitCollection(commitCollection):
@@ -170,7 +170,7 @@ def gitlog(rootDir, projectName):
 
     gitlogFile = generateLog(rootDir, projectName)
     [fileList_all, fileList_py, fileList_notest] = getAllFilesByFilter(rootDir, projectName)
-    print(fileList_all)
+    # print(fileList_all)
     # gitlogFile = rootDir + projectName + "\\" + "mc\\" + "gitlog"
     [commitCollection_all, commitCollection_py, commitCollection_nontest] = processGitLog(gitlogFile, fileList_all, fileList_py, fileList_notest)
 

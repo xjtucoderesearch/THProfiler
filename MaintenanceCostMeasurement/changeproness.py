@@ -53,9 +53,9 @@ def read_mc_file(mc_file):
             else:
                 issueIdList = issueIds.split(";")
 
-            print(fileNameList)
-            fileNameList = formatFileName(fileNameList)
-            print(fileNameList)
+            # print(fileNameList)
+            fileNameLsist = formatFileName(fileNameList)
+            # print(fileNameList)
 
             #author releated
             for fileName in fileNameList:
@@ -155,7 +155,7 @@ def change_bug_proness_compute(fileName_deptype_list, mcAuthorDict, mcCommittime
         fileName_deptype_list[index].append(issueCount)
         fileName_deptype_list[index].append(issueCmtCount)
         fileName_deptype_list[index].append(issueLoc)
-        print(fileName_deptype_list[index])
+        # print(fileName_deptype_list[index])
     return fileName_deptype_list
 
 
@@ -163,7 +163,7 @@ def writeCSV(aList, fileName):
     with open(fileName, "w", newline="", encoding='utf-8') as fp:
         writer = csv.writer(fp, delimiter=",")
         writer.writerows(aList)
-    print(fileName)
+    # print(fileName)
 
 def changeproness(node_file, mc_file, outfile):
     fileName_deptype_list = read_dep_file(node_file)

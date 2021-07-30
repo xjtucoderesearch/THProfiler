@@ -1,5 +1,5 @@
 import argparse
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Optional, List
 
 from DegreeCentrality.file_util import *
@@ -44,9 +44,17 @@ def main():
     parser.add_argument('--measure', action='store_true', dest='measure', default=False,
                         help="analyzes the maintenance cost of typed and untyped files according to the revision "
                              "history managed by VCS")
-
-    parser.add_argument('--feature', action='store', dest='feature')
-    parser.add_argument('--top', action='store', dest='top')
+    parser.add_argument('--sort-by', action='store', dest='sort_by',
+                        help="if sort ")
+    parser.add_argument('--intersection', action='store_true', dest='intersection', default=True,
+                        help="output the intersection set of selected features")
+    parser.add_argument('--union', action='store_false', dest='intersection',
+                        help="output the union set of selected features")
+    parser.add_argument('--feature',metavar=("f1,f2...",), action='store', dest='feature',
+                        help="list of features for recommending, separated by comma(,). "
+                             "Supported features contain degree, drh and maintenance.")
+    parser.add_argument('--top', metavar=("k1,k2...",) ,action='store', dest='top',
+                        help="recommend top k1﹪ files of feature f1")
 
     args = parser.parse_args()
     dispatch(args)
@@ -54,38 +62,49 @@ def main():
 
 def dispatch_feature(src_dir: Path, features: List[str], top: Optional[str], args):
     rank_rates: List[float]
+    default_rate = 0.1
     if top is not None:
         rank_rates = [float(x) * 0.01 for x in top.split(",")]
     else:
         rank_rates = []
-    while len(rank_rates) < len(features):
-        rank_rates.append(0.1)
 
     intersection_recommend_set = set()
     union_recommend_set = set()
-    for feature, rate in zip(features, rank_rates):
+    recommend_res = []
+    for feature in features:
         recommend_lst = []
         if feature == "degree":
+            rate = default_rate if len(rank_rates) == 0 else rank_rates.pop(0)
             recommend_lst = recommend_by_degree(rate, args.dependency)
-            print("Recommend file by degree(top %{} files are recommended):".format(rate * 100))
-            for file in recommend_lst:
-                print(file)
+            # print("Recommend file by degree(top %{} files are recommended):".format(rate * 100))
+            # for file in recommend_lst:
+            #     print(file)
         elif feature == "drh":
-            recommend_lst = recommend_by_drh(args.drh_method, rate)
+            recommend_lst = recommend_by_drh(args.drh_method[0])
         elif feature == "maintenance":
-            recommend_lst = recommend_by_maintenance(src_dir, rate)
-
+            rate = default_rate if len(rank_rates) == 0 else rank_rates.pop(0)
+            if args.sort_by is not None:
+                recommend_lst = recommend_by_maintenance(src_dir, rate, args.sort_by)
+            else:
+                recommend_lst = recommend_by_maintenance(src_dir, rate)
+        recommend_res.append(set(recommend_lst))
         union_recommend_set.update(recommend_lst)
-        if len(intersection_recommend_set) != 0:
-            intersection_recommend_set = intersection_recommend_set.intersection(recommend_lst)
-        else:
-            intersection_recommend_set = set(recommend_lst)
-    print("Intersection recommendation:")
-    for file in intersection_recommend_set:
-        print(file)
-    print("Union recommendation:")
-    for file in union_recommend_set:
-        print(file)
+    if len(recommend_res) > 0:
+        intersection_recommend_set = recommend_res[0]
+    else:
+        return
+    for i in range(1, len(recommend_res)):
+        intersection_recommend_set = intersection_recommend_set.intersection(recommend_res[i])
+
+    if args.intersection:
+        recommend_result = intersection_recommend_set
+        print("intersection of recommended file: ")
+    else:
+        recommend_result = union_recommend_set
+        print("union of recommended file: ")
+    for file in recommend_result:
+        print(str(file).replace("\\", os.sep).replace("/", os.sep))
+
 
 
 def dispatch(args):
@@ -114,8 +133,7 @@ def dispatch(args):
             print("Option error in degree, if you specified degree option,"
                   " degree-output, statistic, dependency and filetype option shouled also be specified")
 
-    if args.drh_method is not None:
-        drh_statistical(args.drh_method, project_name + '_drh.csv')
+
 
     if args.merge:
         merge(*args.merge)

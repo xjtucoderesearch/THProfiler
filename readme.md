@@ -56,3 +56,15 @@ To use this module you should provide a git repository to THProfiler.
 python main.py --directory <git repository> --measure
 ```
 This will generate a folder named mc which put in the project directory.
+
+## Recommendation
+You can use this tool to recommend the files, which should be typed with priority, by degree centrality, design rule hierarchy or maintenance cost measurement.
+
+### Recommendation by Degree Centrality
+
+
+
+### Recommendation by Design Rule Hierarchy
+
+
+### Recommendation by Maintenance Cost
