@@ -1,7 +1,10 @@
-# THProfiler_Recommender
-This is the tool to detect type annotation implementations, create the architectural
-dependency structures, and mine the revision history.   
-According to the different functionality, this tool can be divided into three packages: DegreeCentrality, MaintenanceMeasurement, and TypingCoverageDetection.
+# THProfiler
+THProfiler tool detects and analyzes type annotation implementations in Python software. 
+
+It was designed to support the study in our ASE 2021 work--"Where to Start: Studying Type Annotation Practices in Python".
+
+This tool includes three packages: DegreeCentrality, MaintenanceMeasurement, and TypingCoverageDetection.
+
 ## Usage
 You need first install the requirements in requirement.txt by pip:
 ```sh
@@ -9,15 +12,15 @@ pip install -r requirement.txt
 ```
 
 The entry of this tool is main.py.
+For tool help information, you can use `-h` to see usable command options of THProfiler.  
 
-To use THProfiler, you should specify the arguments related to the functionality you need, and you can provide `-h` to see the usable options.   
 ```sh
 usage: main.py [-h] [--directory PROJECT_ROOT] [--stub STUB_ROOT] [--name PROJECT_NAME] [--out OUT_URL] [--coverage] [--degree] [--dep DEPENDENCY] [--filetype FILETYPE] [--degree_out DEGREE_OUTPUT] [--statistic STATISTIC]
 [--merge ARG1 ARG2 ARG3] [--from-understand FROM_UNDERSTAND FROM_UNDERSTAND FROM_UNDERSTAND] [-drh drh_URL] [--measure]
 ```
 
 ### TypingCoverageDetection
-To get typing coverage of a project from THProfiler, you should provide the project directory path. 
+To get typing coverage of a project, you should provide the project directory path. 
 ```sh
 python main.py --directory <project root path>
 ```
