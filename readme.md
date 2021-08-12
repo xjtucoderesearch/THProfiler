@@ -39,8 +39,8 @@ If you want to compute degree centrality by multiple dependency files, you shoul
 ```sh
 python main.py --merge <dependency file1> <dependency file2> <output dependency file>
 ```
-### DegreeCentrality
-This part takes dependency file as input, then extracts and analyzes the dependency structure at the file level.   
+
+This part takes the dependency file as input, then extracts and analyzes the dependency structure at the file level.   
 In our study, a python project file can be categorized into three types: typed, untyped, onlyAny. Each file contains a percentage `Anyrate`, which indicates Any proportion in the type implementation of the file.  
 You can specify `--degree` option to use this functionality, then specify some arguments: `--dependency`-the dependency file path; `--filetype`-[the file](./FileType.md) indicates type of each files in project; `--degree_out`-the file of degree information; `--statistic`-the proportion statistic output file of each distribution
 ```sh
@@ -55,16 +55,52 @@ To use this module you should provide a git repository to THProfiler.
 ```sh
 python main.py --directory <git repository> --measure
 ```
-This will generate a folder named mc which put in the project directory.
+This will generate a folder named mc which is put in the project directory.
 
 ## Recommendation
-You can use this tool to recommend the files, which should be typed with priority, by degree centrality, design rule hierarchy or maintenance cost measurement.
+You can use this tool to recommend the files, which should be typed with priority, by degree centrality, design rule hierarchy, or maintenance cost measurement.
 
 ### Recommendation by Degree Centrality
+To get the priority to add type hints by degree centrality of the project, you can supply the `degree` to the 
+`feature` option, and specify the dependency file by `--dep` option. 
 
+```shell script
+python main.py --directory <project root path> --feature degree
+```
+By default, the recommender will recommend files that rank in the 10% of centrality. You can also choose the proportion of 
+recommended files by supplying the portion. For instance, you can make the recommender to recommend the files rank in the 15% of centrality.
+```shell script
+python main.py --directory <project root path> --feature degree --top 15
+```
 
+### Recommendation by Design Rule Hierarchy 
+Similar to recommended by degree centrality, you can also get the priority to add type hints by design rule hierarchy, 
+by appending the `drh` to the `feature` option. The recommender will recommend the **first** layer of the design rule hierarchy as output.   
+For example,
+```shell script
+python main.py --directory <project root path> --feature  degree,drh  --union
+```
+the recommender will output the recommendation results based on degree and drh as the union.
 
-### Recommendation by Design Rule Hierarchy
-
+By supply the `--intersection`, the recommender will output the intersection of recommendation result of different features.
+```shell script
+python main.py --directory <project root path> --feature  degree,drh  --intersection
+```
 
 ### Recommendation by Maintenance Cost
+To use the recommender to get recommended files that should be typed with priority by maintenance cost, you should append the 
+`maintenance` to the feature option. For example,
+```shell script
+python main.py --directory <project root path> --feature  degree,drh,maintenance  --union
+```
+the recommender will output the recommendation results based on degree,drh and maintenance cost as the union.
+You can also choose the proportion of recommended files by supplying the portion to the `--top` option.
+```shell script
+python main.py --directory <project root path> --feature degree,drh,maintenance --top 15,20 --union
+```
+The recommender will output the union of top 15% of files rank in degree centrality, first layer of design ruls hierarchy and top 20% os files rank in maintenance cost.
+
+```shell script
+python main.py --directory <project root path> --feature degree,drh,maintenance --top 15,20 --intersection
+```
+The recommender will output the intersection of the top 15% of files rank in degree centrality, the first layer of design ruls hierarchy, and the top 20% of files rank in maintenance cost.
